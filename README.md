@@ -28,12 +28,16 @@ t <VEHICLE_ID>
 ### Setup
 The map can be seen as a weighted graph, where points of significance (e.g. intersections, destinations) are the nodes, while the roads are the edges. The edges are weighted by their physical lengths and distance between the nodes. Additional weight will be added to the edges if a vehicle plans to pass through it.
 
+![map](https://github.com/kwlaial/Smart-Traffic-Management-System/assets/85923968/2739bbd6-5d97-4339-80f7-f5602911fab4)
+
 Three “smart lamp posts” will be placed around the map, so that vehicles can calculate their physical location through getting the distance between themselves and the lamp posts using the UWB radio network, and doing triangulation.
 
 ---
 ### Operation Flow
 ##### 1. Pre-journey planning
 The vehicle will plan out its journey before it starts driving. It first searches paths possible using Dijkstra’s Algorithm, by tracing each path along the nodes, and returning the shortest distance from the initial node to all of the other nodes. It ultimately reconstructs the path  through tracing the target's immediate predecessor, and the immediate predecessor of that, and so on; and saves the steering directions in a queue.
+
+![image](https://github.com/kwlaial/Smart-Traffic-Management-System/assets/85923968/5c0c01c6-3657-4b31-a217-be669dad2cac)
 
 After it finishes planning, its path will be appended on a list on the server through MQTT, where additional weights will be added onto each edge that the vehicle will pass through, to deter other vehicles from occupying the same road.
 
@@ -46,6 +50,10 @@ When the vehicle passes a node, the following operation will be carried out:
 2. Updating the direction queue: The first element of the direction queue (the operation it just carried out) will be dequeued, so the vehicle will check for the next element in the queue next time.
 3. Reporting to the server: the vehicle will report to the server, with its vehicle ID and physical location based on UWB signals, so as to better do traffic analysis.
 4. Updating the map: The edge that the vehicle just passed through will be removed from the list on the server, and the additional weight on said edge will be subtracted, freeing up the path for other vehicles.
+
+##### 4. Demo
+Youtube: https://www.youtube.com/watch?si=9Kq441CLA0UnEAIW&v=gXlfc1FAico&feature=youtu.be
+![image](https://github.com/kwlaial/Smart-Traffic-Management-System/assets/85923968/b8b4f4f1-c8db-4439-8321-54c50ee57803)
 
 ---
 ### Project Contributors
